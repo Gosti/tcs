@@ -15,11 +15,6 @@ Useful for testing the Morphux Package Server ([Morphux Package Server](//github
 ```
 
 
-* Whitespace splitted
-```
-    echo "test tata" | tcs 127.0.0.1:4242 # Send "testtata" to 127.0.0.1:4242 
-```
-
 * Bytes
 ```
     echo "42" | tcs 127.0.0.1:4242 # Send "0x42" to 127.0.0.1:4242 
