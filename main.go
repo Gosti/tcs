@@ -60,8 +60,8 @@ func main() {
 
 		r := make([]byte, 1024)
 
-		_, err = conn.Read(r)
-		println("Reply =>", r)
+		n, err := conn.Read(r)
+		fmt.Println("Reply =>", r[0:n])
 
 		if hasMoreInLine || err == io.EOF {
 			break
