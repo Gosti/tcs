@@ -6,31 +6,14 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"os"
 	"strings"
 )
 
-func printToConn(conn net.Conn, message string, interpreted bool) {
-	if interpreted {
-		dst := make([]byte, hex.DecodedLen(len(message)))
-		n, err := hex.Decode(dst, []byte(message))
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(dst[:n])
-		conn.Write(dst[:n])
-	} else {
-		fmt.Println(conn)
-		fmt.Fprintf(conn, message)
-	}
-}
-
 func main() {
 	BytePtr := flag.Bool("b", false, "Send as interpreted bytes")
-	WaitPtr := flag.Bool("w", false, "Wait for a response after each message")
 
 	flag.Parse()
 
@@ -75,9 +58,10 @@ func main() {
 			fmt.Fprintf(conn, strLine)
 		}
 
-		if *WaitPtr {
-			fmt.Println(ioutil.ReadAll(conn))
-		}
+		r := make([]byte, 1024)
+
+		_, err = conn.Read(r)
+		println("Reply =>", r)
 
 		if hasMoreInLine || err == io.EOF {
 			break
